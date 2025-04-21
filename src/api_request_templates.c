@@ -16,9 +16,6 @@ char* TrainStation(const char* api_key, const char* locationName) {
         "<FILTER>"
         "<EQ name='AdvertisedLocationName' value='%s'/>"
         "</FILTER>"
-        "<EXCLUDE>Deleted</EXCLUDE>"
-        "<EXCLUDE>AdvertisedShortLocationName</EXCLUDE>"
-        "<EXCLUDE>Advertised</EXCLUDE>"
         "</QUERY>"
         "</REQUEST>",
         api_key, locationName);

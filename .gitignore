@@ -1,6 +1,7 @@
 run_program.sh
 trafikverket_program
 *.txt
+*.json
 
 # Compiled source #
 ###################

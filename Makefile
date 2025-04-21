@@ -2,7 +2,7 @@
 
 # Compiler and flags
 CFLAGS = -Wall -ggdb -pedantic
-LIB = `xml2-config --cflags --libs` -lcurl 
+LIB = `xml2-config --cflags --libs` -lcurl -lcjson
 
 # Directories
 SRC_DIR = ./src

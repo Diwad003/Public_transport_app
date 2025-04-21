@@ -1,7 +1,7 @@
 #ifndef API_REQUEST_TEMPLATES_H
 #define API_REQUEST_TEMPLATES_H
 
-#define API_URL "https://api.trafikinfo.trafikverket.se/v2/data.xml"
+#define API_URL "https://api.trafikinfo.trafikverket.se/v2/data.json"
 #define REQUEST_SIZE 512
 
 // Request template for getting train station information
