@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/Trafikverket_api_test.props" />
+</Project>

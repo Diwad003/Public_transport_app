@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "0OLav9Duii0=",
+  "success": true,
+  "projectFilePath": "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/Trafikverket_api_test.csproj",
+  "expectedPackageFiles": [
+    "/home/dawid/.nuget/packages/microsoft.dotnet.ilcompiler/9.0.4/microsoft.dotnet.ilcompiler.9.0.4.nupkg.sha512",
+    "/home/dawid/.nuget/packages/microsoft.net.illink.tasks/9.0.4/microsoft.net.illink.tasks.9.0.4.nupkg.sha512",
+    "/home/dawid/.nuget/packages/runtime.linux-arm64.microsoft.dotnet.ilcompiler/9.0.4/runtime.linux-arm64.microsoft.dotnet.ilcompiler.9.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}

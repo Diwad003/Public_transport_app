@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "T4dESyoY84YKh3MLx0Tluqmkrbq9dIBjjd8hYD7KWhc=",
+  "Source": "Trafikverket_api_test",
+  "BasePath": "_content/Trafikverket_api_test",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

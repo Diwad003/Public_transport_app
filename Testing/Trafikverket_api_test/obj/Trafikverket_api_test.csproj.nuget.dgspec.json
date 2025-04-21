@@ -1,0 +1,90 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/Trafikverket_api_test.csproj": {}
+  },
+  "projects": {
+    "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/Trafikverket_api_test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/Trafikverket_api_test.csproj",
+        "projectName": "Trafikverket_api_test",
+        "projectPath": "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/Trafikverket_api_test.csproj",
+        "packagesPath": "/home/dawid/.nuget/packages/",
+        "outputPath": "/home/dawid/Documents/Trafikverket_program/Testing/Trafikverket_api_test/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/dawid/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "dependencies": {
+            "Microsoft.DotNet.ILCompiler": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.4, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "runtime.linux-arm64.Microsoft.DotNet.ILCompiler",
+              "version": "[9.0.4, 9.0.4]"
+            }
+          ],
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/home/dawid/.dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
