@@ -1,7 +1,7 @@
 #include <https_post.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp) {
     size_t real_size = size * nmemb;
@@ -19,6 +19,21 @@ static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
     mem->response[mem->size] = '\0';
 
     return real_size;
+}
+
+void print_response(char* response){
+    if (response == NULL) {
+        fprintf(stderr, "No response received.\n");
+        return;
+    }
+
+    FILE* fp = fopen("log.txt", "w");
+    if (fp == NULL) {
+        perror("Failed to open log.txt for writing.\n");
+        exit(EXIT_FAILURE);
+    }
+    fprintf(fp, "Response: %s\n", response);
+    fclose(fp);
 }
 
 char* send_and_receive_request(const char *url, char *request_body) {
@@ -70,92 +85,102 @@ char* send_and_receive_request(const char *url, char *request_body) {
     // Free the response memory
     free(chunk.response);
     curl_global_cleanup();
+
+    //print_response(response);
+
     return response;
 }
 
-char* find_str(char* str, char* c, int forward_search) {
-    char* result_str = NULL;
+struct xml_inforamtion* extract_xml(char* start_ptr, int* xml_info_size) {
+    struct xml_inforamtion* xml_info = malloc(sizeof(struct xml_inforamtion*) * 1024);
+
+    char* end_ptr = start_ptr + strlen(start_ptr);
+    char* port_tags_start = NULL;
+    char* port_tags_end = NULL;
+    char* port_tag_name = NULL;
+    char closing_tag[MAX_TAG_SIZE];
     
-    if (forward_search) {
-        result_str = strstr(str, c);
-        if (result_str == NULL) {
-            return NULL;
-        }
-    } else {
-        result_str = str;
-        while (*(--result_str) != *c) {
-            if (result_str == NULL) {
-                return NULL;
-            }
-        }
-        result_str++;
-    }
-
-    return result_str;
-}
-
-struct xml_info* extract_xml_values(const char *xml_string, int *xml_data_size) {
-    char* start_ptr = (char*)xml_string;
-    char* post_tag_start, * post_tag_end, *value_tag_start, *value_tag_end;
-    char* port, * value;
-    int i = 0;
-    struct xml_info* xml_data = malloc(sizeof(struct xml_info));
-    if (xml_data == NULL) {
-        perror("Not enough memory (malloc returned NULL)\n");
-        exit(EXIT_FAILURE);
-    }
-
-    do {
-        value_tag_end = find_str(start_ptr, "</", 1);
-        value_tag_start = find_str(value_tag_end, ">", 0);
-        post_tag_start = find_str(value_tag_end, "<", 0);
-        post_tag_end = find_str(post_tag_start, ">", 1);
-        if (value_tag_start == NULL || value_tag_end == NULL
-            || post_tag_start == NULL || post_tag_end == NULL) {
-            break; // No closing tag found
-        }
-
-
-        port = malloc(post_tag_end - post_tag_start + 1);
-        if (port == NULL) {
-            perror("Not enough memory (malloc returned NULL)\n");
-            exit(EXIT_FAILURE);
-        }
-        strncpy(port, post_tag_start, post_tag_end - post_tag_start);
-        port[post_tag_end - post_tag_start] = '\0';
-        //If first character is '/' then we have found a closing tag, which means no more information
-        if(post_tag_start[0] == '/')
-        {
-            free(port);
+    char* value = NULL;
+    while(1) {
+        //Find the start of a tags
+        port_tags_start = strstr(start_ptr, "<");
+        if(!port_tags_start || port_tags_start > end_ptr) {
             break;
         }
-        
-        xml_data = realloc(xml_data, sizeof(struct xml_info) * (i + 1));
-        if (xml_data == NULL) {
-            perror("Not enough memory (realloc returned NULL)\n");
-            exit(EXIT_FAILURE);
+
+        //Find the start of a tag
+        port_tags_end = strstr(++port_tags_start, ">");
+        if(!port_tags_end || port_tags_end > end_ptr) {
+            break;
         }
-        xml_data[i].post = port;
-        
-        
-        value = malloc(value_tag_end - value_tag_start + 1);
-        if (value == NULL) {
+
+        port_tag_name = malloc(port_tags_end - port_tags_start + 1);
+        if(port_tag_name == NULL) {
             perror("Not enough memory (malloc returned NULL)\n");
             exit(EXIT_FAILURE);
         }
-        strncpy(value, value_tag_start, value_tag_end - value_tag_start);
-        value[value_tag_end - value_tag_start] = '\0';
-        xml_data[i].value = value;
-        
-        // fprintf(stderr, "port:%s\n", port);
-        // fprintf(stderr, "value:%s\n", value);
-        
-        start_ptr = value_tag_end+2;
-        i++;
-    }  while (start_ptr != NULL);
+        strncpy(port_tag_name, port_tags_start, port_tags_end - port_tags_start);
+        port_tag_name[port_tags_end - port_tags_start] = '\0';
 
-    free((void*)xml_string);
-    *xml_data_size = i;
 
+        snprintf(closing_tag, sizeof(closing_tag), "</%s>", port_tag_name);
+        const char* closing_tag_start = strstr(port_tags_end+1, closing_tag);
+        if (strchr(port_tag_name , '/') != NULL) {
+            start_ptr = port_tags_end + strlen(closing_tag) + 1;
+            free(port_tag_name);
+            port_tag_name = NULL;
+            continue;
+        }
+        
+
+        value = NULL;
+        // Extract the value between the tags
+        if (closing_tag_start) {
+            size_t value_length = closing_tag_start - (port_tags_end + 1);
+            value = malloc(value_length + 1);
+            if (value == NULL) {
+                perror("Not enough memory for tag value");
+                exit(EXIT_FAILURE);
+            }
+            strncpy(value, port_tags_end + 1, value_length);
+            if (value[0] == '<') {
+                value[0] = '\0';
+            } else {
+                value[value_length] = '\0';
+            }
+        }
+
+        
+        if (value != NULL && strlen(value) > 0) {
+            start_ptr = port_tags_end + 1 + strlen(value) + strlen(closing_tag);
+        } else {
+            start_ptr = port_tags_end + 1;
+            free(port_tag_name);
+            free(value);
+            port_tag_name = NULL;
+            value = NULL;
+            continue;
+        }
+        
+        // fprintf(stderr, "port_tag_name:%s\n", port_tag_name);
+        // if (value != NULL) {
+        //     fprintf(stderr, "value:%s\n", value);
+        // }
+
+        xml_info[(*xml_info_size)].post = port_tag_name;
+        xml_info[(*xml_info_size)].value = value;
+        (*xml_info_size)++;
+    }
+
+    return xml_info;
+}
+
+struct xml_inforamtion* extract_xml_values(char *xml_string, int *xml_data_size) {
+    struct xml_inforamtion* xml_data = NULL;
+    char* start_ptr = strdup(xml_string);    
+    xml_data = extract_xml(start_ptr, xml_data_size);
+    
+    free((char*)xml_string);
+    free(start_ptr);
     return xml_data;
 }

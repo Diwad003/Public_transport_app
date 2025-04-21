@@ -1,7 +1,7 @@
 # Makefile for Trafikverket_program
 
 # Compiler and flags
-CFLAGS = -Wall -ggdb -std=c99 -pedantic
+CFLAGS = -Wall -ggdb -pedantic
 LIB = `xml2-config --cflags --libs` -lcurl 
 
 # Directories

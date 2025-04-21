@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Trafikverket_api_test")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5dd39bd0f0cdfdc915a78666e4e1e9ce459727a0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Trafikverket_api_test")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Trafikverket_api_test")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
